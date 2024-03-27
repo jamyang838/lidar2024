@@ -1,6 +1,7 @@
 import spidev
 import RPi.GPIO as GPIO
 import time
+import statistics
 
 GPIO0=11
 # 使用標準的物理針位編號
@@ -29,17 +30,32 @@ def write_reg(addr, data1,data2,data3):
 
 
 # 設定 TDC7200 的設定值
+
 def getTime1():
     a = write_reg(0,1,0,0)
     while read_reg(0)[1] != 0:
         pass
     c = read_reg(0x10)
-    data = c[1] *65536 + c[2] * 256 + c[3]
-    print(data)
+    return c[1] *65536 + c[2] * 256 + c[3]
+    # print(data)
+n=0
 
+
+d_list = []
 while True:
-    getTime1()
-    time.sleep(1)
+    d = getTime1()
+    d_list.append(d)
+    n = n + 1
+
+    if n % 1000 == 0:
+        average = statistics.mean(d_list)
+        standard_deviation = statistics.stdev(d_list)
+        print("Average:", average)
+        print("Standard Deviation:", standard_deviation)
+        n = 1
+        d_list = []
+    
+    # time.sleep(0.01)
 # 關閉 SPI 連接
 spi.close()
 GPIO.cleanup()
