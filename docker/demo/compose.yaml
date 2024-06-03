@@ -1,0 +1,7 @@
+services:
+  ros_yang:
+    build: .
+    # ports:
+    #   - "8000:5000"
+  # redis:
+  #   image: "redis:alpine"

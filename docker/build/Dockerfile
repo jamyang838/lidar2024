@@ -23,7 +23,7 @@ RUN mkdir -p /tmp/opt && \
       xargs cp --parents -t /tmp/opt && \
     find ./ -name "COLCON_IGNORE" | \
       xargs cp --parents -t /tmp/opt || true
-`
+
 # multi-stage for building
 FROM $FROM_IMAGE AS builder
 
